@@ -12,71 +12,15 @@
       box-sizing: border-box;
     }
     
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
+    html, body {
+      width: 100%;
+      height: 100%;
       overflow: hidden;
     }
     
-    /* Header/Navbar */
-    .navbar {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    
-    .logo {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-    
-    .brand-name {
-      color: white;
-      font-size: 1.25rem;
-      font-weight: 700;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-    
-    .nav-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    
-    .nav-btn {
-      padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 0.5rem;
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f3f4f6;
     }
     
     /* Loading Overlay */
@@ -88,6 +32,7 @@
       height: 100%;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
@@ -97,6 +42,30 @@
     .loading-overlay.hidden {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
+    }
+    
+    .logo-container {
+      margin-bottom: 2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      margin: 0 auto;
     }
     
     .loader-content {
@@ -119,128 +88,192 @@
     }
     
     .loading-text {
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.5rem;
+      font-weight: 700;
       margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     
     .loading-subtext {
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
     }
     
-    /* Main Content - iframe */
-    .content-wrapper {
-      position: absolute;
-      top: 73px; /* Height of navbar */
-      left: 0;
-      width: 100%;
-      height: calc(100vh - 73px);
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin: 1rem auto 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
       background: white;
+      border-radius: 2px;
+      animation: progress 2s ease-in-out infinite;
     }
     
+    @keyframes progress {
+      0% {
+        width: 0%;
+        transform: translateX(0);
+      }
+      50% {
+        width: 70%;
+      }
+      100% {
+        width: 100%;
+        transform: translateX(100%);
+      }
+    }
+    
+    /* Main iframe - Full Screen */
     #app-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      background: white;
+      display: block;
     }
     
     /* Error Message */
-    .error-message {
+    .error-container {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      max-width: 500px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      justify-content: center;
+      align-items: center;
       z-index: 10000;
     }
     
-    .error-message.show {
-      display: block;
-      animation: slideIn 0.3s ease-out;
+    .error-container.show {
+      display: flex;
+    }
+    
+    .error-content {
+      background: white;
+      padding: 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 500px;
+      margin: 1rem;
+      animation: slideIn 0.4s ease-out;
     }
     
     @keyframes slideIn {
       from {
         opacity: 0;
-        transform: translate(-50%, -60%);
+        transform: translateY(-30px);
       }
       to {
         opacity: 1;
-        transform: translate(-50%, -50%);
+        transform: translateY(0);
       }
     }
     
     .error-icon {
-      font-size: 3rem;
+      font-size: 4rem;
       margin-bottom: 1rem;
     }
     
     .error-title {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 700;
       color: #dc2626;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
     
     .error-text {
       color: #6b7280;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
       line-height: 1.6;
+      font-size: 1rem;
     }
     
-    .retry-btn {
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+    .error-hint {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+    
+    .error-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 0.875rem 1.75rem;
       border: none;
       border-radius: 0.5rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
     }
     
-    .retry-btn:hover {
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    
+    .btn-secondary:hover {
+      background: #e5e7eb;
       transform: translateY(-2px);
     }
     
     @media (max-width: 768px) {
-      .navbar {
-        padding: 0.75rem 1rem;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-      
-      .brand-name {
-        font-size: 1rem;
-      }
-      
       .logo {
-        width: 32px;
-        height: 32px;
-        font-size: 1.2rem;
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
       }
       
-      .nav-actions {
+      .loading-text {
+        font-size: 1.25rem;
+      }
+      
+      .loading-subtext {
+        font-size: 0.9rem;
+      }
+      
+      .error-content {
+        padding: 2rem 1.5rem;
+      }
+      
+      .error-title {
+        font-size: 1.5rem;
+      }
+      
+      .error-buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
         width: 100%;
-        justify-content: center;
-      }
-      
-      .nav-btn {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-      }
-      
-      .content-wrapper {
-        top: 120px;
-        height: calc(100vh - 120px);
       }
     }
   </style>
@@ -248,84 +281,153 @@
 <body>
   <!-- Loading Overlay -->
   <div class="loading-overlay" id="loadingOverlay">
+    <div class="logo-container">
+      <div class="logo">🛡️</div>
+    </div>
     <div class="loader-content">
       <div class="spinner"></div>
-      <div class="loading-text">Memuat Moban KBS Dashboard</div>
-      <div class="loading-subtext">Mohon tunggu sebentar...</div>
+      <div class="loading-text">Moban KBS Dashboard</div>
+      <div class="loading-subtext">Menghubungkan ke server...</div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Error Message -->
-  <div class="error-message" id="errorMessage">
-    <div class="error-icon">⚠️</div>
-    <div class="error-title">Gagal Memuat Dashboard</div>
-    <div class="error-text">
-      Terjadi kesalahan saat memuat aplikasi. Pastikan koneksi internet Anda stabil dan coba lagi.
+  <!-- Error Container -->
+  <div class="error-container" id="errorContainer">
+    <div class="error-content">
+      <div class="error-icon">🔒</div>
+      <div class="error-title">Tidak Dapat Memuat Dashboard</div>
+      <div class="error-text">
+        Google Apps Script memblokir akses melalui iframe untuk alasan keamanan.
+      </div>
+      <div class="error-hint">
+        Untuk login dan menggunakan dashboard, silakan buka aplikasi di tab baru dengan tombol di bawah ini.
+      </div>
+      <div class="error-buttons">
+        <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" 
+           target="_blank" 
+           class="btn btn-primary">
+           🚀 Buka Dashboard
+        </a>
+        <button onclick="retryLoad()" class="btn btn-secondary">
+          🔄 Coba Lagi
+        </button>
+      </div>
     </div>
-    <button class="retry-btn" onclick="retryLoad()">Coba Lagi</button>
   </div>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo-section">
-      <div class="logo">🛡️</div>
-      <span class="brand-name">Moban KBS Dashboard</span>
-    </div>
-    <div class="nav-actions">
-      <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" 
-         target="_blank" 
-         class="nav-btn">
-         Buka di Tab Baru
-      </a>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="content-wrapper">
-    <iframe 
-      id="app-frame"
-      src="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec"
-      title="Moban KBS Dashboard"
-      allow="clipboard-write; clipboard-read"
-      sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
-    ></iframe>
-  </div>
+  <!-- Main App iframe - Full Screen -->
+  <iframe 
+    id="app-frame"
+    src="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec"
+    title="Moban KBS Dashboard"
+    allow="clipboard-write; clipboard-read; camera; microphone"
+    loading="eager"
+  ></iframe>
 
   <script>
     const iframe = document.getElementById('app-frame');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const errorMessage = document.getElementById('errorMessage');
+    const errorContainer = document.getElementById('errorContainer');
     
-    // Hide loading overlay when iframe loads
-    iframe.addEventListener('load', function() {
-      setTimeout(() => {
-        loadingOverlay.classList.add('hidden');
-      }, 500);
-    });
+    let loadTimeout;
+    let hasLoaded = false;
     
-    // Show error if iframe fails to load
-    iframe.addEventListener('error', function() {
-      loadingOverlay.classList.add('hidden');
-      errorMessage.classList.add('show');
-    });
-    
-    // Timeout fallback (if loading takes too long)
-    setTimeout(() => {
-      if (!loadingOverlay.classList.contains('hidden')) {
-        loadingOverlay.classList.add('hidden');
+    // Function to hide loading and show content
+    function hideLoading() {
+      if (!hasLoaded) {
+        hasLoaded = true;
+        setTimeout(() => {
+          loadingOverlay.classList.add('hidden');
+        }, 500);
       }
-    }, 10000); // 10 seconds
+    }
+    
+    // Function to show error
+    function showError() {
+      loadingOverlay.classList.add('hidden');
+      errorContainer.classList.add('show');
+    }
+    
+    // Iframe load event
+    iframe.addEventListener('load', function() {
+      clearTimeout(loadTimeout);
+      
+      // Check if iframe loaded successfully
+      try {
+        // Try to access iframe content (will fail if blocked by X-Frame-Options)
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // If we can access it, hide loading
+        hideLoading();
+      } catch (e) {
+        // If blocked, show error
+        console.log('Iframe blocked by X-Frame-Options');
+        showError();
+      }
+    });
+    
+    // Iframe error event
+    iframe.addEventListener('error', function() {
+      clearTimeout(loadTimeout);
+      showError();
+    });
+    
+    // Timeout fallback (10 seconds)
+    loadTimeout = setTimeout(() => {
+      if (!hasLoaded) {
+        // Try to detect if iframe is blocked
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          if (!iframeDoc) {
+            showError();
+          } else {
+            hideLoading();
+          }
+        } catch (e) {
+          showError();
+        }
+      }
+    }, 10000);
     
     // Retry function
     function retryLoad() {
-      errorMessage.classList.remove('show');
+      errorContainer.classList.remove('show');
       loadingOverlay.classList.remove('hidden');
-      iframe.src = iframe.src; // Reload iframe
+      hasLoaded = false;
+      
+      // Reload iframe
+      iframe.src = iframe.src;
+      
+      // Reset timeout
+      clearTimeout(loadTimeout);
+      loadTimeout = setTimeout(() => {
+        if (!hasLoaded) {
+          showError();
+        }
+      }, 10000);
     }
     
-    // Handle window resize
-    window.addEventListener('resize', function() {
-      // Adjust content wrapper height if needed
+    // Message listener untuk komunikasi dengan iframe (jika diperlukan)
+    window.addEventListener('message', function(event) {
+      // Verifikasi origin untuk keamanan
+      if (event.origin === 'https://script.google.com') {
+        console.log('Message from iframe:', event.data);
+        
+        // Hide loading jika dapat pesan dari iframe
+        if (event.data && event.data.type === 'ready') {
+          hideLoading();
+        }
+      }
+    });
+    
+    // Detect page visibility (jika user berpindah tab)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden && !hasLoaded) {
+        retryLoad();
+      }
     });
   </script>
 </body>

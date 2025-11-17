@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mengalihkan...</title>
-    <meta http-equiv="refresh" content="3; url=https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec">
+    <title>Welcome</title>
     <style>
         * {
             margin: 0;
@@ -14,26 +13,116 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
         }
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        .intro-container {
             text-align: center;
-            animation: slideUp 0.5s ease-out;
+            position: relative;
+            z-index: 10;
         }
 
-        @keyframes slideUp {
+        /* Logo Animation */
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            background: white;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: logoEntry 1s ease-out, logoFloat 3s ease-in-out 1s infinite;
+            position: relative;
+        }
+
+        @keyframes logoEntry {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .logo svg {
+            width: 60px;
+            height: 60px;
+            fill: #667eea;
+            animation: iconRotate 2s ease-in-out infinite;
+        }
+
+        @keyframes iconRotate {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+
+        /* Glow Effect */
+        .logo::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 30px;
+            opacity: 0;
+            z-index: -1;
+            animation: glow 2s ease-in-out 1s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Text Animations */
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -44,70 +133,39 @@
             }
         }
 
-        .icon-wrapper {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            animation: pulse 2s infinite;
+        /* Loading Bar */
+        .loading-container {
+            width: 300px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.2s forwards;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
             }
         }
 
-        .icon-wrapper svg {
-            width: 40px;
-            height: 40px;
-            fill: white;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #2d3748;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: #718096;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-
-        .progress-container {
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
+        .loading-bar {
             width: 100%;
-            height: 8px;
-            background: #e2e8f0;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 15px;
+            backdrop-filter: blur(10px);
         }
 
-        .progress {
+        .loading-progress {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 10px;
-            animation: loading 3s ease-in-out;
+            animation: loadProgress 4s ease-in-out forwards;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
-        @keyframes loading {
+        @keyframes loadProgress {
             0% {
                 width: 0%;
             }
@@ -116,80 +174,157 @@
             }
         }
 
-        .status-text {
-            color: #667eea;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .manual-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 12px 30px;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .manual-link:hover {
-            background: #667eea;
+        .loading-text {
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 2px;
         }
 
-        .footer {
-            margin-top: 40px;
-            color: #a0aec0;
-            font-size: 12px;
+        /* Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
-        .dots {
-            display: inline-block;
-            animation: dots 1.5s infinite;
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: float linear infinite;
+            opacity: 0.6;
         }
 
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Circles Background */
+        .bg-circles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: circleFloat 20s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            left: -100px;
+            top: -100px;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            right: -50px;
+            top: 50%;
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            left: 50%;
+            bottom: -100px;
+            animation-delay: 4s;
+        }
+
+        @keyframes circleFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(50px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
+        }
+
+        /* Skip Button */
+        .skip-button {
+            display: none;
         }
     </style>
-    <script>
-        setTimeout(function() {
-            window.location.replace('https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec');
-        }, 3000);
-    </script>
 </head>
 <body>
-    <div class="card">
-        <div class="icon-wrapper">
+    <!-- Background Circles -->
+    <div class="bg-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="intro-container">
+        <div class="logo">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
             </svg>
         </div>
         
-        <h1>Mengalihkan</h1>
-        <p class="subtitle">Mohon tunggu sebentar, Anda akan segera dialihkan</p>
+        <h1 class="title">MOBAN KBS</h1>
+        <p class="subtitle">Mempersiapkan Dashboard Anda</p>
         
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress"></div>
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
-            <p class="status-text">Memproses<span class="dots">...</span></p>
-        </div>
-
-        <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" class="manual-link">
-            Klik di sini jika tidak teralihkan
-        </a>
-
-        <div class="footer">
-            © 2025 Dashboard. All rights reserved.
+            <p class="loading-text">LOADING...</p>
         </div>
     </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = Math.random() * 5 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+
+        // Auto redirect after 5 seconds
+        setTimeout(function() {
+            window.location.replace('https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec');
+        }, 5000);
+    </script>
 </body>
 </html>

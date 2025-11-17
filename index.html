@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moban KBS Dashboard</title>
+  <title>Moban KBS - Loading...</title>
+  
+  <!-- Redirect otomatis setelah 2 detik -->
+  <meta http-equiv="refresh" content="2; url=https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec">
   
   <style>
     * {
@@ -12,47 +15,53 @@
       box-sizing: border-box;
     }
     
-    html, body {
-      width: 100%;
-      height: 100%;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       overflow: hidden;
     }
     
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f3f4f6;
-    }
-    
-    /* Loading Overlay */
-    .loading-overlay {
+    body::before {
+      content: '';
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    
-    .loading-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.3), transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(139, 92, 246, 0.2), transparent 50%);
       pointer-events: none;
+      animation: pulse 8s ease-in-out infinite;
     }
     
-    .logo-container {
-      margin-bottom: 2rem;
-      animation: float 3s ease-in-out infinite;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .loader-container {
+      text-align: center;
+      color: white;
+      z-index: 1;
+      animation: fadeIn 0.6s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     .logo {
@@ -63,14 +72,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      margin: 0 auto 2rem;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      margin: 0 auto;
+      animation: float 3s ease-in-out infinite;
     }
     
-    .loader-content {
-      text-align: center;
-      color: white;
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .logo-text {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .spinner {
@@ -87,17 +109,17 @@
       to { transform: rotate(360deg); }
     }
     
-    .loading-text {
-      font-size: 1.5rem;
+    h1 {
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     
-    .loading-subtext {
+    p {
       font-size: 1rem;
       opacity: 0.9;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
     
     .progress-bar {
@@ -105,7 +127,7 @@
       height: 4px;
       background: rgba(255, 255, 255, 0.2);
       border-radius: 2px;
-      margin: 1rem auto 0;
+      margin: 0 auto;
       overflow: hidden;
     }
     
@@ -130,305 +152,99 @@
       }
     }
     
-    /* Main iframe - Full Screen */
-    #app-frame {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    
-    /* Error Message */
-    .error-container {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-    }
-    
-    .error-container.show {
-      display: flex;
-    }
-    
-    .error-content {
-      background: white;
-      padding: 3rem;
-      border-radius: 1rem;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      max-width: 500px;
-      margin: 1rem;
-      animation: slideIn 0.4s ease-out;
-    }
-    
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .error-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-    
-    .error-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #dc2626;
-      margin-bottom: 1rem;
-    }
-    
-    .error-text {
-      color: #6b7280;
-      margin-bottom: 0.5rem;
-      line-height: 1.6;
-      font-size: 1rem;
-    }
-    
-    .error-hint {
-      color: #9ca3af;
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-      line-height: 1.5;
-    }
-    
-    .error-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    
-    .btn {
-      padding: 0.875rem 1.75rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .fallback-link {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.75rem;
+      color: white;
       text-decoration: none;
       display: inline-block;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
     
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
-    
-    .btn-primary:hover {
+    .fallback-link:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
     
-    .btn-secondary {
-      background: #f3f4f6;
-      color: #374151;
-    }
-    
-    .btn-secondary:hover {
-      background: #e5e7eb;
-      transform: translateY(-2px);
+    .countdown {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 1rem;
     }
     
     @media (max-width: 768px) {
-      .logo {
-        width: 60px;
-        height: 60px;
-        font-size: 2rem;
-      }
-      
-      .loading-text {
-        font-size: 1.25rem;
-      }
-      
-      .loading-subtext {
-        font-size: 0.9rem;
-      }
-      
-      .error-content {
-        padding: 2rem 1.5rem;
-      }
-      
-      .error-title {
+      h1 {
         font-size: 1.5rem;
       }
       
-      .error-buttons {
-        flex-direction: column;
+      p {
+        font-size: 0.9rem;
       }
       
-      .btn {
-        width: 100%;
+      .logo {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .logo-text {
+        font-size: 2rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="logo-container">
-      <div class="logo">🛡️</div>
+  <div class="loader-container">
+    <div class="logo">
+      <div class="logo-text">🛡️</div>
     </div>
-    <div class="loader-content">
-      <div class="spinner"></div>
-      <div class="loading-text">Moban KBS Dashboard</div>
-      <div class="loading-subtext">Menghubungkan ke server...</div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-      </div>
+    
+    <div class="spinner"></div>
+    
+    <h1>Moban KBS Dashboard</h1>
+    <p>Menghubungkan ke server...</p>
+    
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
     </div>
+    
+    <div class="countdown" id="countdown">Redirect dalam <span id="timer">2</span> detik...</div>
+    
+    <!-- Fallback link jika redirect gagal -->
+    <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" class="fallback-link" id="fallbackLink">
+      Klik di sini jika tidak otomatis redirect
+    </a>
   </div>
-
-  <!-- Error Container -->
-  <div class="error-container" id="errorContainer">
-    <div class="error-content">
-      <div class="error-icon">🔒</div>
-      <div class="error-title">Tidak Dapat Memuat Dashboard</div>
-      <div class="error-text">
-        Google Apps Script memblokir akses melalui iframe untuk alasan keamanan.
-      </div>
-      <div class="error-hint">
-        Untuk login dan menggunakan dashboard, silakan buka aplikasi di tab baru dengan tombol di bawah ini.
-      </div>
-      <div class="error-buttons">
-        <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" 
-           target="_blank" 
-           class="btn btn-primary">
-           🚀 Buka Dashboard
-        </a>
-        <button onclick="retryLoad()" class="btn btn-secondary">
-          🔄 Coba Lagi
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main App iframe - Full Screen -->
-  <iframe 
-    id="app-frame"
-    src="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec"
-    title="Moban KBS Dashboard"
-    allow="clipboard-write; clipboard-read; camera; microphone"
-    loading="eager"
-  ></iframe>
 
   <script>
-    const iframe = document.getElementById('app-frame');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const errorContainer = document.getElementById('errorContainer');
+    // URL Apps Script Anda
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec';
     
-    let loadTimeout;
-    let hasLoaded = false;
+    // Update fallback link
+    document.getElementById('fallbackLink').href = APPS_SCRIPT_URL;
     
-    // Function to hide loading and show content
-    function hideLoading() {
-      if (!hasLoaded) {
-        hasLoaded = true;
-        setTimeout(() => {
-          loadingOverlay.classList.add('hidden');
-        }, 500);
+    // Countdown timer
+    let seconds = 2;
+    const timerElement = document.getElementById('timer');
+    const countdownInterval = setInterval(() => {
+      seconds--;
+      timerElement.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdown').textContent = 'Redirecting...';
       }
-    }
+    }, 1000);
     
-    // Function to show error
-    function showError() {
-      loadingOverlay.classList.add('hidden');
-      errorContainer.classList.add('show');
-    }
-    
-    // Iframe load event
-    iframe.addEventListener('load', function() {
-      clearTimeout(loadTimeout);
-      
-      // Check if iframe loaded successfully
-      try {
-        // Try to access iframe content (will fail if blocked by X-Frame-Options)
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        
-        // If we can access it, hide loading
-        hideLoading();
-      } catch (e) {
-        // If blocked, show error
-        console.log('Iframe blocked by X-Frame-Options');
-        showError();
-      }
-    });
-    
-    // Iframe error event
-    iframe.addEventListener('error', function() {
-      clearTimeout(loadTimeout);
-      showError();
-    });
-    
-    // Timeout fallback (10 seconds)
-    loadTimeout = setTimeout(() => {
-      if (!hasLoaded) {
-        // Try to detect if iframe is blocked
-        try {
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-          if (!iframeDoc) {
-            showError();
-          } else {
-            hideLoading();
-          }
-        } catch (e) {
-          showError();
-        }
-      }
-    }, 10000);
-    
-    // Retry function
-    function retryLoad() {
-      errorContainer.classList.remove('show');
-      loadingOverlay.classList.remove('hidden');
-      hasLoaded = false;
-      
-      // Reload iframe
-      iframe.src = iframe.src;
-      
-      // Reset timeout
-      clearTimeout(loadTimeout);
-      loadTimeout = setTimeout(() => {
-        if (!hasLoaded) {
-          showError();
-        }
-      }, 10000);
-    }
-    
-    // Message listener untuk komunikasi dengan iframe (jika diperlukan)
-    window.addEventListener('message', function(event) {
-      // Verifikasi origin untuk keamanan
-      if (event.origin === 'https://script.google.com') {
-        console.log('Message from iframe:', event.data);
-        
-        // Hide loading jika dapat pesan dari iframe
-        if (event.data && event.data.type === 'ready') {
-          hideLoading();
-        }
-      }
-    });
-    
-    // Detect page visibility (jika user berpindah tab)
-    document.addEventListener('visibilitychange', function() {
-      if (!document.hidden && !hasLoaded) {
-        retryLoad();
-      }
-    });
+    // Redirect setelah 2 detik
+    setTimeout(() => {
+      window.location.href = APPS_SCRIPT_URL;
+    }, 2000);
   </script>
 </body>
 </html>

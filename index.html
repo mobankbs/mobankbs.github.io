@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moban KBS - Loading...</title>
   
-  <!-- 🔥 GANTI URL INI dengan Apps Script Web App URL Anda -->
-  <meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec">
+  <!-- Redirect otomatis setelah 2 detik -->
+  <meta http-equiv="refresh" content="2; url=https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec">
   
   <style>
     * {
@@ -86,8 +86,9 @@
       }
     }
     
-    .logo i {
+    .logo-text {
       font-size: 2.5rem;
+      font-weight: 700;
       background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -172,6 +173,12 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
     
+    .countdown {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
+    
     @media (max-width: 768px) {
       h1 {
         font-size: 1.5rem;
@@ -186,19 +193,16 @@
         height: 60px;
       }
       
-      .logo i {
+      .logo-text {
         font-size: 2rem;
       }
     }
   </style>
-  
-  <!-- Bootstrap Icons (optional, untuk icon) -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="loader-container">
     <div class="logo">
-      <i class="bi bi-shield-lock"></i>
+      <div class="logo-text">🛡️</div>
     </div>
     
     <div class="spinner"></div>
@@ -210,6 +214,8 @@
       <div class="progress-fill"></div>
     </div>
     
+    <div class="countdown" id="countdown">Redirect dalam <span id="timer">2</span> detik...</div>
+    
     <!-- Fallback link jika redirect gagal -->
     <a href="https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec" class="fallback-link" id="fallbackLink">
       Klik di sini jika tidak otomatis redirect
@@ -217,26 +223,28 @@
   </div>
 
   <script>
-    // 🔥 GANTI URL INI dengan Apps Script Web App URL Anda
+    // URL Apps Script Anda
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec';
     
     // Update fallback link
     document.getElementById('fallbackLink').href = APPS_SCRIPT_URL;
     
-    // JavaScript redirect (backup jika meta refresh gagal)
-    setTimeout(() => {
-      window.location.href = APPS_SCRIPT_URL;
+    // Countdown timer
+    let seconds = 2;
+    const timerElement = document.getElementById('timer');
+    const countdownInterval = setInterval(() => {
+      seconds--;
+      timerElement.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdown').textContent = 'Redirecting...';
+      }
     }, 1000);
     
-    // Optional: Check if localStorage has session, pass it along
-    const sessionId = localStorage.getItem('moban_session');
-    if (sessionId) {
-      const urlWithSession = `${APPS_SCRIPT_URL}?sessionId=${sessionId}`;
-      document.getElementById('fallbackLink').href = urlWithSession;
-      setTimeout(() => {
-        window.location.href = urlWithSession;
-      }, 1000);
-    }
+    // Redirect setelah 2 detik
+    setTimeout(() => {
+      window.location.href = APPS_SCRIPT_URL;
+    }, 2000);
   </script>
 </body>
 </html>

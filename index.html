@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Welcome - MOBAN KBS</title>
     <style>
         * {
             margin: 0;
@@ -12,9 +12,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,303 +25,140 @@
             text-align: center;
             position: relative;
             z-index: 10;
+            width: 90%;
+            max-width: 400px;
         }
 
-        /* Logo Animation */
-        .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 40px;
-            background: white;
-            border-radius: 30px;
+        /* Logo Container - Dibuat lebih adaptif */
+        .logo-wrapper {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: logoEntry 1s ease-out, logoFloat 3s ease-in-out 1s infinite;
-            position: relative;
+            padding: 15px; /* Memberi ruang agar logo tidak mepet ke pinggir */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: logoEntry 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                       logoFloat 3s ease-in-out 1.2s infinite;
+        }
+
+        .logo-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Menjaga rasio gambar agar tidak gepeng */
         }
 
         @keyframes logoEntry {
-            0% {
-                transform: scale(0) rotate(-180deg);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.2) rotate(10deg);
-            }
-            100% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         @keyframes logoFloat {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-15px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
-        .logo img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            animation: iconRotate 2s ease-in-out infinite;
-        }
-
-        @keyframes iconRotate {
-            0%, 100% {
-                transform: rotate(0deg);
-            }
-            50% {
-                transform: rotate(10deg);
-            }
-        }
-
-        /* Glow Effect */
-        .logo::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 30px;
-            opacity: 0;
-            z-index: -1;
-            animation: glow 2s ease-in-out 1s infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                opacity: 0;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: scale(1.1);
-            }
-        }
-
-        /* Text Animations */
+        /* Typography */
         .title {
-            font-size: 48px;
-            font-weight: 700;
+            font-size: clamp(28px, 8vw, 42px);
+            font-weight: 800;
             color: white;
-            margin-bottom: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.1);
             opacity: 0;
             animation: fadeInUp 0.8s ease-out 0.5s forwards;
         }
 
         .subtitle {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 50px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            font-weight: 400;
             opacity: 0;
             animation: fadeInUp 0.8s ease-out 0.8s forwards;
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading Bar */
-        .loading-container {
-            width: 300px;
+        /* Loading Bar Modern */
+        .loading-box {
+            width: 220px;
             margin: 0 auto;
             opacity: 0;
-            animation: fadeIn 0.8s ease-out 1.2s forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+            animation: fadeIn 0.8s ease-out 1s forwards;
         }
 
         .loading-bar {
             width: 100%;
-            height: 6px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
+            margin-bottom: 10px;
         }
 
-        .loading-progress {
+        .progress-fill {
             height: 100%;
-            background: white;
+            width: 0%;
+            background: #ffffff;
             border-radius: 10px;
-            animation: loadProgress 4s ease-in-out forwards;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            animation: loadFill 4.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        @keyframes loadProgress {
-            0% {
-                width: 0%;
-            }
-            100% {
-                width: 100%;
-            }
+        @keyframes loadFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
 
         .loading-text {
             color: white;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 2px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        /* Background Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Background Elements */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             z-index: 1;
         }
 
-        .particle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: float linear infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Circles Background */
-        .bg-circles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: circleFloat 20s infinite ease-in-out;
-        }
-
-        .circle:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            left: -100px;
-            top: -100px;
-            animation-delay: 0s;
-        }
-
-        .circle:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            right: -50px;
-            top: 50%;
-            animation-delay: 2s;
-        }
-
-        .circle:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            left: 50%;
-            bottom: -100px;
-            animation-delay: 4s;
-        }
-
-        @keyframes circleFloat {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            33% {
-                transform: translate(50px, -50px) scale(1.1);
-            }
-            66% {
-                transform: translate(-30px, 30px) scale(0.9);
-            }
-        }
-
-        /* Skip Button */
-        .skip-button {
-            display: none;
-        }
+        @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
 <body>
-    <!-- Background Circles -->
-    <div class="bg-circles">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-    </div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
+    <div class="bg-glow"></div>
 
-    <!-- Main Content -->
     <div class="intro-container">
-        <div class="logo">
-            <img
-                src="https://i.ibb.co/tp6RbGxx/6237600799941312974.jpg"
-                alt="Logo MOBAN KBS">
+        <div class="logo-wrapper">
+            <img src="https://i.ibb.co/tp6RbGxx/6237600799941312974.jpg" alt="Logo MOBAN KBS">
         </div>
         
         <h1 class="title">MOBAN KBS</h1>
-        <p class="subtitle">Mempersiapkan Dashboard Anda</p>
+        <p class="subtitle">Mempersiapkan Dashboard Anda...</p>
         
-        <div class="loading-container">
+        <div class="loading-box">
             <div class="loading-bar">
-                <div class="loading-progress"></div>
+                <div class="progress-fill"></div>
             </div>
-            <p class="loading-text">LOADING...</p>
+            <p class="loading-text">SINKRONISASI</p>
         </div>
     </div>
 
     <script>
-        // Create floating particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            const size = Math.random() * 5 + 2;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            
-            particlesContainer.appendChild(particle);
-        }
-
-        // Auto redirect after 5 seconds
+        // Auto redirect setelah 5 detik
         setTimeout(function() {
             window.location.replace('https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec');
         }, 5000);

@@ -40,7 +40,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: logoEntry 1s ease-out, logoFloat 3s ease-in-out 1s infinite;
             position: relative;
-            overflow: hidden; /* Memastikan gambar tidak keluar dari border radius */
+            overflow: hidden; /* Memastikan logo tetap di dalam border radius */
         }
 
         @keyframes logoEntry {
@@ -66,13 +66,12 @@
             }
         }
 
-        /* Logo Image Style */
+        /* CSS untuk Logo Baru */
         .logo img {
-            width: 80%; /* Ukuran gambar di dalam kotak putih */
-            height: 80%;
+            width: 80%; /* Ukuran logo di dalam kotak putih */
+            height: auto;
             object-fit: contain;
             animation: iconRotate 2s ease-in-out infinite;
-            mix-blend-mode: multiply;
         }
 
         @keyframes iconRotate {
@@ -283,7 +282,7 @@
 
     <div class="intro-container">
         <div class="logo">
-            <img src="https://i.ibb.co.com/tp6RbGxx/6237600799941312974.jpg" alt="Logo MOBAN">
+            <img src="https://i.ibb.co/LXKRw0ct/de00e460-ef00-4aa9-9f57-871558abaa42.png" alt="Logo MOBAN KBS">
         </div>
         
         <h1 class="title">MOBAN KBS</h1>
@@ -298,7 +297,6 @@
     </div>
 
     <script>
-        // Create floating particles
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
@@ -314,7 +312,6 @@
             particlesContainer.appendChild(particle);
         }
 
-        // Auto redirect after 5 seconds
         setTimeout(function() {
             window.location.replace('https://script.google.com/macros/s/AKfycbw8CL_9oohi20F-rRBQtiTNes-XDLswDfA4cgrX8LCTQZ3ak2CNEhAc0OQieshSf9TW/exec');
         }, 5000);

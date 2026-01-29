@@ -40,6 +40,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: logoEntry 1s ease-out, logoFloat 3s ease-in-out 1s infinite;
             position: relative;
+            overflow: hidden; /* Memastikan gambar tidak keluar dari border radius */
         }
 
         @keyframes logoEntry {
@@ -65,10 +66,11 @@
             }
         }
 
-        .logo svg {
-            width: 60px;
-            height: 60px;
-            fill: #667eea;
+        /* Logo Image Style */
+        .logo img {
+            width: 80%; /* Ukuran gambar di dalam kotak putih */
+            height: 80%;
+            object-fit: contain;
             animation: iconRotate 2s ease-in-out infinite;
         }
 
@@ -77,7 +79,7 @@
                 transform: rotate(0deg);
             }
             50% {
-                transform: rotate(10deg);
+                transform: rotate(5deg);
             }
         }
 
@@ -267,30 +269,20 @@
                 transform: translate(-30px, 30px) scale(0.9);
             }
         }
-
-        /* Skip Button */
-        .skip-button {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Background Circles -->
     <div class="bg-circles">
         <div class="circle"></div>
         <div class="circle"></div>
         <div class="circle"></div>
     </div>
 
-    <!-- Particles -->
     <div class="particles" id="particles"></div>
 
-    <!-- Main Content -->
     <div class="intro-container">
         <div class="logo">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
-            </svg>
+            <img src="https://i.ibb.co.com/tp6RbGxx/6237600799941312974.jpg" alt="Logo MOBAN">
         </div>
         
         <h1 class="title">MOBAN KBS</h1>
